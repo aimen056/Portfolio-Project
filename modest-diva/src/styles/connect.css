@@ -1,0 +1,926 @@
+/* ============================================================
+   CONNECT — Sealed Envelope + Sliding Card
+   Color Option C: Blush + Dusty Gold on warm peach cream
+   ============================================================ */
+
+/* ── Section ─────────────────────────────────────────────────── */
+#contact {
+    position: relative;
+    width: 100%;
+    min-height: 100vh;
+    background: #FDF4EC;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    /* Generous top so the emerging card always stays inside the section */
+    padding: clamp(260px, 28vh, 360px) 5vw 10vh;
+    overflow: hidden;
+}
+
+/* Textured paper overlay (Kraft / Vellum style) */
+#contact::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    /* Organic grain filter */
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    opacity: 0.05;
+    pointer-events: none;
+    z-index: 0;
+}
+
+/* ── Dust Motes (Floating in Sunlight) ───────────────────── */
+.ct-dust {
+    position: absolute;
+    width: 2px;
+    height: 2px;
+    background: #FFF;
+    border-radius: 50%;
+    opacity: 0;
+    pointer-events: none;
+    z-index: 6;
+    filter: blur(0.5px);
+}
+
+#contact.is-visible .ct-dust {
+    animation: ct-dust-float 12s linear infinite;
+}
+
+@keyframes ct-dust-float {
+    0% {
+        transform: translate(0, 0);
+        opacity: 0;
+    }
+
+    20% {
+        opacity: 0.4;
+    }
+
+    80% {
+        opacity: 0.4;
+    }
+
+    100% {
+        transform: translate(100px, -150px);
+        opacity: 0;
+    }
+}
+
+/* Blush haze – top left */
+.ct-haze--pink {
+    position: absolute;
+    top: -10%;
+    left: -8%;
+    width: 55vw;
+    height: 55vw;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(220, 160, 140, 0.18) 0%, transparent 70%);
+    pointer-events: none;
+    animation: ct-haze 16s ease-in-out infinite alternate;
+    z-index: 0;
+}
+
+/* Gold haze – bottom right */
+.ct-haze--gold {
+    position: absolute;
+    bottom: -12%;
+    right: -10%;
+    width: 48vw;
+    height: 48vw;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(212, 175, 55, 0.12) 0%, transparent 70%);
+    pointer-events: none;
+    animation: ct-haze 20s ease-in-out infinite alternate-reverse;
+    z-index: 0;
+}
+
+@keyframes ct-haze {
+    from {
+        transform: translate(0, 0) scale(1);
+    }
+
+    to {
+        transform: translate(2%, 3%) scale(1.07);
+    }
+}
+
+/* ── Light Leak (Sunlight wash that follows mouse) ────────── */
+.ct-light-leak {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 5;
+    background: radial-gradient(circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
+            rgba(255, 255, 255, 0.25) 0%,
+            rgba(255, 240, 220, 0.08) 30%,
+            transparent 70%);
+    mix-blend-mode: soft-light;
+    opacity: 0;
+    transition: opacity 1.5s ease;
+}
+
+#contact.is-visible .ct-light-leak {
+    opacity: 1;
+}
+
+/* ── Background Graphic Elements (Floating Orbs & Icons) ──── */
+.ct-bg-graphic {
+    position: absolute;
+    pointer-events: none;
+    z-index: 1;
+    /* Above haze, below envelope */
+    opacity: 0;
+    transition: opacity 1.5s ease 0.3s;
+}
+
+#contact.is-visible .ct-bg-graphic {
+    opacity: 1;
+}
+
+/* Glowing Minimalist Rings */
+.ct-bg-glow-ring {
+    width: 35vw;
+    height: 35vw;
+    border-radius: 50%;
+    border: 1px solid rgba(212, 175, 55, 0.4);
+    box-shadow: 0 0 40px rgba(212, 175, 55, 0.15), inset 0 0 40px rgba(212, 175, 55, 0.15);
+    background: radial-gradient(circle, rgba(212, 175, 55, 0.05) 0%, transparent 70%);
+}
+
+.ct-glow-top-left {
+    top: 10%;
+    left: -10%;
+    animation: ct-float-slow 25s ease-in-out infinite alternate;
+}
+
+.ct-glow-bottom-right {
+    bottom: -5%;
+    right: -5%;
+    width: 45vw;
+    height: 45vw;
+    animation: ct-float-slow 30s ease-in-out infinite alternate-reverse;
+}
+
+/* Floating Strategy Icons */
+.ct-bg-icon {
+    position: absolute;
+    color: rgba(212, 175, 55, 0.55);
+    /* High visibility gold */
+    opacity: 0;
+    z-index: 2;
+    pointer-events: none;
+    transition: opacity 2s ease 0.5s, transform 2s cubic-bezier(0.23, 1, 0.32, 1);
+    filter: drop-shadow(0 4px 12px rgba(212, 175, 55, 0.3));
+}
+
+#contact.is-visible .ct-bg-icon {
+    opacity: 1;
+}
+
+.ct-bg-icon svg {
+    width: 4vw;
+    min-width: 45px;
+    max-width: 90px;
+    height: auto;
+}
+
+.ct-icon-target {
+    top: 15%;
+    left: 10%;
+    animation: ct-float-icon 8s ease-in-out infinite alternate;
+}
+
+.ct-icon-network {
+    bottom: 25%;
+    left: 12%;
+    animation: ct-float-icon 12s ease-in-out infinite alternate-reverse;
+}
+
+.ct-icon-bars {
+    top: 18%;
+    right: 12%;
+    color: rgba(180, 110, 80, 0.5);
+    /* Warm contrasting tone */
+    animation: ct-float-icon 10s ease-in-out infinite alternate;
+}
+
+.ct-icon-cursor {
+    bottom: 20%;
+    right: 15%;
+    animation: ct-float-icon 9s ease-in-out infinite alternate-reverse;
+}
+
+@keyframes ct-float-slow {
+    0% {
+        transform: translate(0, 0) scale(1) rotate(0deg);
+    }
+
+    100% {
+        transform: translate(4%, 6%) scale(1.05) rotate(10deg);
+    }
+}
+
+@keyframes ct-float-icon {
+    0% {
+        transform: translateY(0) rotate(-5deg);
+    }
+
+    100% {
+        transform: translateY(-25px) rotate(5deg);
+    }
+}
+
+/* Fine gold top rule */
+.ct-top-rule {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(to right, transparent, rgba(212, 175, 55, 0.4) 40%, rgba(212, 175, 55, 0.4) 60%, transparent);
+    z-index: 1;
+}
+
+/* ── Meta row (above envelope) ──────────────────────────────── */
+.ct-meta {
+    position: relative;
+    z-index: 2;
+    width: 720px;
+    /* Increased width */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2.2rem;
+}
+
+.ct-eyebrow {
+    font-family: var(--font-main);
+    font-size: 0.65rem;
+    font-weight: 600;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: rgba(140, 90, 60, 0.55);
+    opacity: 0;
+    transform: translateY(8px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.ct-eyebrow.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.ct-doc-num {
+    font-family: var(--font-main);
+    font-size: 0.6rem;
+    letter-spacing: 0.18em;
+    color: rgba(180, 130, 80, 0.4);
+}
+
+/* ── Envelope scene wrapper ─────────────────────────────────── */
+.ct-scene {
+    position: relative;
+    z-index: 2;
+    opacity: 0;
+    transform: translateY(-18px);
+    transition: opacity 0.75s ease, transform 0.75s cubic-bezier(0.23, 1, 0.32, 1);
+
+    /* For 3D Tilt parallax */
+    perspective: 1000px;
+    transform-style: preserve-3d;
+}
+
+.ct-scene-tilt {
+    transition: transform 0.1s ease-out;
+    transform-style: preserve-3d;
+}
+
+.ct-scene.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* ── The Envelope ───────────────────────────────────────────── */
+.ct-envelope {
+    position: relative;
+    width: 720px;
+    height: 420px;
+    border-radius: 2px;
+    overflow: hidden;
+    background: #D4A373;
+    /* Kraft base */
+    box-shadow:
+        0 30px 80px rgba(160, 100, 60, 0.20),
+        0 8px 24px rgba(160, 100, 60, 0.12),
+        inset 0 0 0 1px rgba(255, 255, 255, 0.15);
+    transition: box-shadow 0.6s ease;
+}
+
+/* Kraft Texture Overlay */
+.ct-envelope::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.5' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    opacity: 0.12;
+    pointer-events: none;
+    z-index: 1;
+}
+
+/* Unlock overflow when animating so card can slide above */
+.ct-envelope.is-animating {
+    overflow: visible;
+}
+
+/* ── Envelope Back (main body) ──────────────────────────────── */
+.ct-env-back {
+    position: absolute;
+    inset: 0;
+    background: #D4A373;
+    z-index: 1;
+}
+
+/* Interior fold triangles — classic envelope diamond */
+.ct-env-fold {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 50%;
+    background: rgba(0, 0, 0, 0.07);
+}
+
+.ct-env-fold--left {
+    left: 0;
+    clip-path: polygon(0 0, 0 100%, 100% 50%);
+}
+
+.ct-env-fold--right {
+    right: 0;
+    clip-path: polygon(100% 0, 100% 100%, 0 50%);
+}
+
+/* Inner shadow at the open top */
+.ct-env-back::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 30%;
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.12), transparent);
+    z-index: 1;
+}
+
+/* ── Letter Card ────────────────────────────────────────────── */
+.ct-env-card {
+    position: absolute;
+    top: 32px;
+    left: 4%;
+    width: 92%;
+    height: 600px;
+    background: #FFFEF9;
+    z-index: 2;
+    border-radius: 1px;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.12);
+    transform: translateY(0);
+    /* Transition for rise and settle */
+    transition: transform 1.6s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.6s ease;
+    outline: 1px solid rgba(210, 170, 120, 0.15);
+}
+
+/* Vellum / Linen Texture for Card */
+.ct-env-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='f'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23f)'/%3E%3C/svg%3E");
+    opacity: 0.04;
+    pointer-events: none;
+    z-index: 5;
+}
+
+.ct-env-card.is-out {
+    transform: translateY(-82%);
+    /* High reveal to clear pocket completely */
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.2);
+}
+
+.ct-env-card.is-settled {
+    transform: translateY(-30%);
+    /* Settles down over the front of the envelope */
+    z-index: 10;
+    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.25);
+}
+
+/* ── Front Cover Strip (masks card bottom — "pocket") ───────── */
+.ct-env-front {
+    position: absolute;
+    top: 47%;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: #CC9860;
+    z-index: 3;
+    /* Subtle shadow depth */
+    box-shadow: inset 0 8px 16px rgba(0, 0, 0, 0.10);
+}
+
+/* Thin gold crease line at the pocket edge */
+.ct-env-front::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 8%;
+    right: 8%;
+    height: 1px;
+    background: rgba(255, 215, 0, 0.35);
+}
+
+/* ── Flap ───────────────────────────────────────────────────── */
+.ct-env-flap {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 37%;
+    transform-origin: top center;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    z-index: 4;
+    /* Slow, theatrical flap open */
+    transition: transform 1.4s cubic-bezier(0.23, 1, 0.32, 1);
+    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.12));
+}
+
+.ct-env-flap::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(to bottom, #C4905A, #D4A373);
+    /* V-shape pointing downward */
+    clip-path: polygon(0 0, 100% 0, 50% 100%);
+}
+
+.ct-env-flap.is-open {
+    transform: perspective(1400px) rotateX(-175deg);
+}
+
+.ct-env-flap.is-behind {
+    z-index: 0;
+}
+
+/* ── Wax Seal (Interactive) ────────────────────────────────── */
+.ct-env-seal {
+    position: absolute;
+    bottom: -28px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 62px;
+    height: 62px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 38% 38%, #A04878, #6B2B54);
+    border: 2.5px solid rgba(212, 175, 55, 0.85);
+    box-shadow:
+        0 0 0 1px rgba(212, 175, 55, 0.22),
+        0 8px 24px rgba(0, 0, 0, 0.32);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 50;
+    /* Increased to ensure it's above any haze/particles */
+    pointer-events: auto;
+    /* Explicitly enable clicks */
+    animation: seal-pulse 2.2s ease-in-out infinite;
+    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.3s ease, box-shadow 0.3s ease;
+}
+
+.ct-env-seal:hover {
+    transform: translateX(-50%) scale(1.1);
+    box-shadow: 0 0 20px rgba(212, 175, 55, 0.4), 0 12px 30px rgba(0, 0, 0, 0.35);
+}
+
+@keyframes seal-pulse {
+
+    0%,
+    100% {
+        box-shadow: 0 0 0 0 rgba(212, 175, 55, 0.4);
+    }
+
+    50% {
+        box-shadow: 0 0 0 12px rgba(212, 175, 55, 0);
+    }
+}
+
+.ct-env-seal.is-breaking {
+    transform: translateX(-50%) scale(0.55);
+    opacity: 0;
+    pointer-events: none;
+    /* Let clicks pass through to card */
+}
+
+.ct-seal-letter {
+    font-family: var(--font-heading);
+    font-style: italic;
+    font-size: 1.55rem;
+    color: #FFD700;
+    line-height: 1;
+    user-select: none;
+}
+
+/* ── Human Touch (Pressed Flower / Imperfection) ───────────── */
+.ct-flower {
+    position: absolute;
+    bottom: 2rem;
+    left: 2rem;
+    width: 60px;
+    height: 80px;
+    opacity: 0.25;
+    pointer-events: none;
+    z-index: 10;
+    transform: rotate(-10deg);
+    filter: sepia(0.6) contrast(0.8);
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 60 80' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M30 75C30 75 25 60 25 50C25 40 30 35 30 35C30 35 35 40 35 50C35 60 30 75 30 75Z' fill='%236B8E23'/%3E%3Ccircle cx='30' cy='30' r='8' fill='%23DEB887'/%3E%3Cpath d='M30 22C30 22 25 15 20 15C15 15 10 20 10 25C10 30 15 35 20 35C25 35 30 22 30 22Z' fill='%23CD5C5C'/%3E%3Cpath d='M30 22C30 22 35 15 40 15C45 15 50 20 50 25C50 30 45 35 40 35C35 35 30 22 30 22Z' fill='%23CD5C5C'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-size: contain;
+}
+
+/* Card text styles */
+.ct-card-inner {
+    padding: 2.5rem 3rem 2rem;
+    /* More breathing room */
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    position: relative;
+    /* Multilayer Parallax Support */
+    transform-style: preserve-3d;
+}
+
+/* Decorative stamp – top right of card */
+.ct-stamp {
+    position: absolute;
+    top: 1.6rem;
+    right: 1.8rem;
+    width: 50px;
+    height: 58px;
+    border: 2px dashed rgba(180, 130, 80, 0.3);
+    border-radius: 2px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 4px;
+}
+
+.ct-stamp::after {
+    content: '';
+    position: absolute;
+    inset: 3px;
+    border: 1px solid rgba(180, 130, 80, 0.15);
+    border-radius: 1px;
+}
+
+.ct-stamp-inner {
+    font-family: var(--font-main);
+    font-size: 0.48rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-align: center;
+    text-transform: uppercase;
+    color: rgba(180, 130, 80, 0.45);
+    line-height: 1.6;
+}
+
+/* ── Strategic Postmark (Gold Foil Stamp) ─────────────────── */
+.ct-postmark {
+    position: absolute;
+    top: 3rem;
+    right: 4rem;
+    width: 90px;
+    height: 90px;
+    border: 1.5px solid rgba(212, 175, 55, 0.4);
+    border-radius: 50%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    opacity: 0;
+    transform: scale(2) rotate(-15deg);
+    transition: opacity 0.4s ease, transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    pointer-events: none;
+    z-index: 10;
+}
+
+.ct-postmark.is-stamped {
+    opacity: 1;
+    transform: scale(1) rotate(-12deg);
+}
+
+.ct-postmark::before {
+    content: '';
+    position: absolute;
+    inset: 4px;
+    border: 0.5px solid rgba(212, 175, 55, 0.2);
+    border-radius: 50%;
+}
+
+.ct-pm-text {
+    font-family: var(--font-main);
+    font-size: 0.38rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: rgba(180, 130, 80, 0.6);
+    text-align: center;
+}
+
+.ct-pm-center {
+    font-family: var(--font-heading);
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: #D4AF37;
+    margin: 2px 0;
+}
+
+/* Card text styles */
+.ct-card-eyebrow {
+    font-family: var(--font-main);
+    font-size: 0.58rem;
+    font-weight: 600;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: rgba(162, 105, 65, 0.60);
+}
+
+.ct-card-rule {
+    height: 1px;
+    background: linear-gradient(to right, #D4AF37, rgba(212, 175, 55, 0.2));
+    border: none;
+    margin: 0.2rem 0;
+}
+
+.ct-card-to {
+    font-family: var(--font-heading);
+    font-size: 1rem;
+    font-style: italic;
+    font-weight: 400;
+    color: rgba(80, 50, 30, 0.55);
+    margin: 0;
+}
+
+.ct-card-heading {
+    font-family: var(--font-heading);
+    font-size: clamp(1.6rem, 3vw, 2.2rem);
+    font-weight: 700;
+    line-height: 1.18;
+    letter-spacing: -0.02em;
+    color: #2C1810;
+    margin: 0;
+}
+
+.ct-card-heading em {
+    font-style: italic;
+    color: #8B4A2A;
+}
+
+.ct-card-body {
+    font-family: var(--font-main);
+    font-size: 0.82rem;
+    font-weight: 300;
+    color: rgba(70, 42, 22, 0.68);
+    line-height: 1.75;
+    margin: 0;
+}
+
+/* CTA button on card */
+.ct-card-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    text-decoration: none;
+    font-family: var(--font-main);
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+    color: #FFFEF9;
+    background: #2C1810;
+    padding: 0.85rem 1.8rem;
+    border-radius: 2px;
+    align-self: flex-start;
+    position: relative;
+    overflow: hidden;
+    transition: box-shadow 0.3s ease, transform 0.25s ease;
+}
+
+.ct-card-cta::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: #D4AF37;
+    transform: translateX(-100%);
+    transition: transform 0.38s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.ct-card-cta:hover::before {
+    transform: translateX(0);
+}
+
+.ct-card-cta:hover {
+    box-shadow: 0 6px 24px rgba(212, 175, 55, 0.35);
+    transform: translateY(-2px);
+    color: #2C1810;
+}
+
+.ct-card-cta span,
+.ct-card-cta svg {
+    position: relative;
+    z-index: 1;
+}
+
+.ct-card-cta svg {
+    width: 14px;
+    height: 14px;
+    stroke: currentColor;
+    transition: transform 0.3s ease;
+}
+
+.ct-card-cta:hover svg {
+    transform: translateX(3px);
+}
+
+/* Signature */
+.ct-card-sig-line {
+    height: 1px;
+    background: rgba(180, 130, 80, 0.2);
+    margin: 0.4rem 0 0.2rem;
+}
+
+.ct-card-sig {
+    font-family: 'Mrs Saint Delafield', cursive;
+    font-size: 2.8rem;
+    font-weight: 400;
+    color: #2C1810;
+    margin: -1rem 0 0;
+    /* Adjust margin due to large font descent */
+    opacity: 0;
+    transition: opacity 1s ease;
+}
+
+.ct-card-sig.is-written {
+    opacity: 1;
+}
+
+.ct-card-sig-sub {
+    font-family: var(--font-main);
+    font-size: 0.6rem;
+    font-weight: 400;
+    letter-spacing: 0.12em;
+    color: rgba(130, 88, 52, 0.55);
+    text-transform: uppercase;
+    margin: 0;
+}
+
+/* ── Reveal stagger for card elements ─────────────────────── */
+[data-reveal] {
+    opacity: 0;
+    transform: translateY(7px);
+    transition: opacity 0.5s ease, transform 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+[data-reveal].is-visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* ── Footer status badge ──────────────────────────────────── */
+.ct-foot {
+    position: relative;
+    z-index: 2;
+    margin-top: 3.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.7rem;
+    opacity: 0;
+    transform: translateY(10px);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+}
+
+.ct-foot.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Pill badge */
+.ct-foot-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
+    padding: 0.4rem 1.1rem;
+    background: rgba(212, 175, 55, 0.09);
+    border: 1px solid rgba(212, 175, 55, 0.30);
+    border-radius: 100px;
+}
+
+.ct-foot-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #D4AF37;
+    flex-shrink: 0;
+    animation: foot-pulse 2.2s ease-in-out infinite;
+}
+
+@keyframes foot-pulse {
+
+    0%,
+    100% {
+        box-shadow: 0 0 0 0 rgba(212, 175, 55, 0.50);
+    }
+
+    50% {
+        box-shadow: 0 0 0 5px rgba(212, 175, 55, 0);
+    }
+}
+
+.ct-foot-badge-text {
+    font-family: var(--font-main);
+    font-size: 0.62rem;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: rgba(150, 100, 55, 0.80);
+}
+
+/* Sub-line below badge */
+.ct-foot-sub {
+    font-family: var(--font-heading);
+    font-size: 0.88rem;
+    font-style: italic;
+    color: rgba(110, 70, 38, 0.40);
+}
+
+/* Page footer */
+.ct-page-foot {
+    position: absolute;
+    bottom: 3vh;
+    left: 6vw;
+    z-index: 2;
+    font-family: var(--font-main);
+    font-size: 0.58rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: rgba(160, 110, 70, 0.30);
+}
+
+.ct-page-foot em {
+    font-style: normal;
+    color: rgba(160, 110, 70, 0.50);
+}
+
+/* ── RESPONSIVE ─────────────────────────────────────────────── */
+@media (max-width: 660px) {
+    #contact {
+        padding-top: clamp(200px, 32vw, 260px);
+    }
+
+    .ct-envelope {
+        width: 92vw;
+        height: 56vw;
+    }
+
+    .ct-meta {
+        width: 92vw;
+    }
+
+    .ct-env-card {
+        top: 14px;
+        left: 3%;
+        width: 94%;
+        height: 420px;
+    }
+
+    .ct-env-card.is-out {
+        transform: translateY(-50%);
+    }
+
+    .ct-card-inner {
+        padding: 1.4rem 1.4rem 1.2rem;
+        gap: 0.6rem;
+    }
+
+    .ct-card-heading {
+        font-size: 1.35rem;
+    }
+
+    .ct-stamp {
+        display: none;
+    }
+}

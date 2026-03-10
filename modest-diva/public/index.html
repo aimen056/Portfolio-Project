@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zil e Huma | Digital Marketing Strategist</title>
+    <meta name="description"
+        content="From a village girl to a global digital strategist. Brand experiences that stop the scroll.">
+
+    <link rel="stylesheet" href="/src/styles/global.css">
+    <link rel="stylesheet" href="/src/styles/hero.css">
+    <link rel="stylesheet" href="/src/styles/timeline.css">
+    <link rel="stylesheet" href="/src/styles/corridor.css">
+    <link rel="stylesheet" href="/src/styles/philosophy.css">
+    <link rel="stylesheet" href="/src/styles/impact-video.css">
+    <link rel="stylesheet" href="/src/styles/connect.css">
+</head>
+
+<body>
+
+    <header class="glass-nav-container">
+        <nav class="glass-nav">
+            <div class="logo">Zil e Huma<span class="gold-dot">.</span></div>
+
+            <ul class="nav-menu">
+                <li><a href="#timeline">My Story</a></li>
+                <li><a href="#philosophy">What I Do</a></li>
+                <li><a href="#impact">Impact</a></li>
+                <li><a href="#corridor">Beyond Business</a></li>
+                <li><a href="#contact">Let's Connect</a></li>
+            </ul>
+
+            <div class="nav-cta">
+                <a href="#contact" class="cta-button">Let's talk</a>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <!-- ── Hero Section ───────────────────────────────────── -->
+        <section id="hero">
+            <div class="hero-overlay"></div>
+            <canvas id="hero-canvas"></canvas>
+
+            <div class="hero-floating-elements">
+                <img src="/public/images/1.png" class="float-img float-left-1" alt="Float 1">
+                <img src="/public/images/2.png" class="float-img float-left-2" alt="Float 2">
+                <img src="/public/images/3.png" class="float-img float-left-3" alt="Float 3">
+                <img src="/public/images/4.png" class="float-img float-right-1" alt="Float 4">
+                <img src="/public/images/5.png" class="float-img float-right-2" alt="Float 5">
+                <img src="/public/images/6.png" class="float-img float-right-3" alt="Float 6">
+            </div>
+
+            <div class="hero-content">
+                <p class="hero-eyebrow" id="hero-eyebrow">Digital Marketing Strategist &bull; Agency Owner &bull; AI
+                    Trainer</p>
+                <h1 id="hero-title">I help brands stop blending in and <span>start showing up.</span></h1>
+                <p class="hero-subtitle" id="hero-subtitle">And yes &mdash; a Modest Diva who believes quiet moves make
+                    the loudest impact.</p>
+            </div>
+
+            <!-- Bouncing scroll-down indicator -->
+            <div class="hero-scroll-indicator"
+                onclick="document.getElementById('timeline').scrollIntoView({behavior:'smooth'})">
+                <div class="hero-scroll-arrow">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5"
+                        stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+                    </svg>
+                </div>
+            </div>
+        </section>
+
+        <!-- ── TIMELINE / My Story Section ───────────────────── -->
+        <section id="timeline">
+            <div class="tl-story-eyebrow">
+                <div class="tl-intro-text">
+                    <span class="tl-story-eyebrow-label">Zil e Huma</span>
+                    <h2 class="tl-story-eyebrow-heading">
+                        A village girl's journey<br>
+                        to global digital strategy —<br>
+                        quiet moves, loud impact.
+                    </h2>
+                </div>
+                <div class="tl-intro-image">
+                    <img src="/public/images/zil_portrait.png" alt="Zil e Huma" class="tl-portrait" />
+                </div>
+            </div>
+        </section>
+
+        <!-- ── WHAT I DO — Philosophy Section ──────────────────── -->
+        <section id="philosophy"></section>
+
+        <!-- ── IMPACT — Achievements ───────────────────────────── -->
+        <section id="impact">
+            <div class="video-container" id="video-box">
+
+                <!-- Background 3D Canvas -> Used ONLY for the sphere and the map now -->
+                <canvas id="video-canvas"></canvas>
+
+                <!-- Dynamic Background Images (Parallax applied) -->
+                <div class="bg-image" id="bg-map" style="background-image: url('/public/images/flat-world-map.png');">
+                </div>
+
+                <!-- Layout Grids for "Half Screen" Content Overlays -->
+                <div class="layout-grid">
+
+                    <!-- Scene 1: Logo -->
+                    <div class="scene" id="scene-logo">
+                        <img src="/public/images/digital-diva-logo-gold.png" alt="Digital Diva Logo" class="video-logo"
+                            id="intro-logo">
+                    </div>
+
+                    <!-- Scene 2: Hook (Sphere fills right side, Text on left) -->
+                    <div class="scene split-scene" id="scene-hook">
+                        <div class="text-half left">
+                            <span class="hook-line1">Numbers don't lie.</span>
+                            <span class="hook-line2">Neither do I.</span>
+                        </div>
+                        <!-- Right half is empty for the massive 3D sphere from canvas -->
+                    </div>
+
+                    <!-- Scene 3: 5+ Years (Time rings on left, Text on right) -->
+                    <div class="scene split-scene" id="scene-years">
+                        <div class="visual-half left"></div>
+                        <div class="text-half right">
+                            <div class="stat-large">
+                                <div class="stat-num">5+</div>
+                                <div class="stat-label">Years Running My Agency</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Scene 4: 200+ Projects (Blocks filling left, text right) -->
+                    <div class="scene split-scene" id="scene-projects">
+                        <div class="visual-half left" id="blocks-container">
+                            <!-- Added via JS -->
+                        </div>
+                        <div class="text-half right">
+                            <div class="stat-large">
+                                <div class="stat-num">200+</div>
+                                <div class="stat-label">Projects Delivered Globally</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Scene 5: Female Team (3D Women on left, text on right) -->
+                    <div class="scene split-scene" id="scene-female">
+                        <div class="visual-half left" id="female-3d-container"
+                            style="background-image: url('/public/images/scene-female.png'); background-color: var(--color-bg); background-blend-mode: lighten; background-size: 80% auto; background-repeat: no-repeat; background-position: center;">
+                        </div>
+                        <div class="text-half right">
+                            <div class="stat-large" style="text-align: right;">
+                                <div class="stat-num">90%</div>
+                                <div class="stat-label">Female-Powered Team</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Scene 6: Global Map (Map in canvas, Text on top left) -->
+                    <div class="scene" id="scene-global">
+                        <div class="map-pulse"></div>
+                        <div class="map-ring"></div>
+                        <div class="text-corner top-left">
+                            <span class="global-word">GLOBAL</span>
+                            <span class="global-sub">Local to International Reach</span>
+                        </div>
+                    </div>
+
+                    <!-- Scene 7: Closer / Impact (3D Handshake + Systems) -->
+                    <div class="scene split-scene" id="scene-closer">
+                        <div class="visual-half left" id="handshake-3d-container"
+                            style="background-image: url('/public/images/scene-handshake.png'); background-color: var(--color-bg); background-blend-mode: lighten; background-size: 80% auto; background-repeat: no-repeat; background-position: center;">
+                        </div>
+                        <div class="text-half right">
+                            <div class="strategy-text" id="strat-ai">Powerful Growth Systems</div>
+                            <div class="pull-quote" style="margin-top:2vw;">
+                                <span class="quote-p1">"I don't chase trends.</span><br>
+                                <span class="quote-p2">I build frameworks that outlast them."</span>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Controls -->
+                <div class="controls-overlay">
+                    <button id="replay-btn">Replay Video</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- ── BEYOND BUSINESS — 3D Corridor Walk-Through ──────── -->
+        <section id="corridor">
+            <div id="corridor-sticky">
+                <canvas id="corridor-canvas"></canvas>
+                <canvas id="corridor-dust"></canvas>
+                <div id="corridor-progress"></div>
+                <div id="corridor-label">
+                    <span class="corridor-eyebrow">Beyond Business</span>
+                    <span class="corridor-title">Success means nothing if you're<br>the only one winning.</span>
+                </div>
+                <div id="corridor-scroll-hint">
+                    <span class="corridor-scroll-text">scroll to walk</span>
+                    <div class="corridor-scroll-line"></div>
+                </div>
+                <div id="corridor-text-overlay">
+                    <div class="corridor-text-panel">
+                        <span class="panel-label">origins</span>
+                        <p>I grew up in a remote area. <strong>I know what it feels like when the world tells you that
+                                tech, marketing, business — that's not for girls like you.</strong></p>
+                    </div>
+                </div>
+                <div id="corridor-quote">
+                    <span class="corridor-quote-mark">&ldquo;</span>
+                    <p class="corridor-quote-text">I want more women in tech.<br>Especially the ones nobody expects.</p>
+                    <span class="corridor-quote-sub">— Zil e Huma</span>
+                </div>
+                <div id="corridor-zone">
+                    <span class="zone-label">you are in</span>
+                    <div class="zone-name">The Village</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ── LET'S CONNECT — Contact Section ────────────────── -->
+        <section id="contact"></section>
+    </main>
+
+    <!-- ── Dependencies ──────────────────────────────────────── -->
+    <!-- Use r134 for model-viewer.js compatibility -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+
+    <!-- ── Application ───────────────────────────────────────── -->
+    <script src="/src/js/hero.js"></script>
+    <script src="/src/js/scroll.js"></script>
+    <script src="/src/js/timeline.js"></script>
+    <script src="/src/js/corridor.js"></script>
+    <script src="/src/js/philosophy.js"></script>
+    <script src="/src/js/impact-video.js"></script>
+    <script src="/src/js/connect.js"></script>
+    <!-- model-viewer uses ES modules — loads GLBs into Three.js canvases -->
+
+
+</body>
+
+</html>

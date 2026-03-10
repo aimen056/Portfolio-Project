@@ -1,0 +1,517 @@
+/* ============================================================
+   SERVICES HEADING BAND
+   ============================================================ */
+
+#services-intro {
+    position: relative;
+    width: 100%;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 0 10vw;
+    background: var(--color-bg);
+    overflow: hidden;
+}
+
+/* Decorative gold rule */
+#services-intro::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(to right, transparent, rgba(255, 215, 0, 0.4), transparent);
+}
+
+.services-eyebrow {
+    font-family: var(--font-main);
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--color-accent);
+    margin-bottom: 1.2rem;
+}
+
+.services-heading {
+    font-family: var(--font-heading);
+    font-size: clamp(3rem, 7vw, 6rem);
+    font-weight: 700;
+    color: var(--color-text);
+    line-height: 1.08;
+    max-width: 700px;
+    margin-bottom: 2rem;
+    opacity: 0;
+    transform: translateY(40px);
+    transition: opacity 0.9s cubic-bezier(0.23, 1, 0.32, 1),
+        transform 0.9s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.services-heading.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.services-heading em {
+    font-style: italic;
+    color: var(--color-text);
+    position: relative;
+}
+
+/* Animated underline on the italic word */
+.services-heading em::after {
+    content: '';
+    position: absolute;
+    bottom: -4px;
+    left: 0;
+    width: 0%;
+    height: 2px;
+    background: var(--color-accent);
+    transition: width 1.1s cubic-bezier(0.23, 1, 0.32, 1) 0.4s;
+}
+
+.services-heading.is-visible em::after {
+    width: 100%;
+}
+
+.services-sub {
+    font-family: var(--font-main);
+    font-size: clamp(1rem, 1.4vw, 1.15rem);
+    font-weight: 300;
+    color: rgba(26, 26, 26, 0.55);
+    max-width: 500px;
+    line-height: 1.7;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.8s ease 0.25s, transform 0.8s ease 0.25s;
+}
+
+.services-sub.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Decorative large numeral */
+.services-deco-number {
+    position: absolute;
+    right: 8vw;
+    bottom: 10vh;
+    font-family: var(--font-heading);
+    font-size: clamp(8rem, 18vw, 18rem);
+    font-weight: 700;
+    color: transparent;
+    -webkit-text-stroke: 1px rgba(26, 26, 26, 0.06);
+    line-height: 1;
+    pointer-events: none;
+    user-select: none;
+}
+
+/* ============================================================
+   CORRIDOR — "Beyond Business" 3D Walk-Through Section
+   ============================================================ */
+
+#corridor {
+    /* Tall section — scroll space for the corridor journey */
+    height: 600vh;
+    background: #0a0a0a;
+    /* near-black base */
+    position: relative;
+}
+
+/* Sticky shell that holds the canvas + overlays */
+#corridor-sticky {
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    width: 100%;
+    overflow: hidden;
+}
+
+/* The Three.js canvas */
+#corridor-canvas {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+
+/* ── Progress bar (gold line at top) ──────────────────────── */
+#corridor-progress {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 2px;
+    width: 0%;
+    background: linear-gradient(to right, #D4AF37, #FFD700, #D4AF37);
+    z-index: 20;
+    transition: width 0.05s linear;
+    box-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+}
+
+/* ── Section Label — starts centered, migrates to corner ──── */
+#corridor-label {
+    position: absolute;
+    /* Initial: centered in the viewport */
+    top: 48%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 20;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 0.55rem;
+    opacity: 0;
+    pointer-events: none;
+
+    /* All positional/size props transition smoothly */
+    transition:
+        top 1.5s cubic-bezier(0.23, 1, 0.32, 1),
+        left 1.5s cubic-bezier(0.23, 1, 0.32, 1),
+        transform 1.5s cubic-bezier(0.23, 1, 0.32, 1),
+        opacity 1.0s ease,
+        gap 1.0s ease;
+}
+
+/* JS adds this to fade the label in on corridor enter */
+#corridor-label.is-visible {
+    opacity: 1;
+}
+
+/* JS adds this when scroll starts — migrates to top-left corner */
+#corridor-label.is-corner {
+    top: 110px;
+    left: 3vw;
+    transform: none;
+    align-items: flex-start;
+    text-align: left;
+    gap: 0.2rem;
+}
+
+@keyframes fade-in-up {
+    from {
+        opacity: 0;
+        transform: translateY(12px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.corridor-eyebrow {
+    font-family: var(--font-main);
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: rgba(212, 175, 55, 0.7);
+    transition: font-size 1.2s ease, letter-spacing 1.2s ease;
+}
+
+#corridor-label.is-corner .corridor-eyebrow {
+    font-size: 0.55rem;
+    letter-spacing: 0.16em;
+}
+
+.corridor-title {
+    font-family: var(--font-heading);
+    font-size: clamp(1.9rem, 3.8vw, 3rem);
+    /* Large when centered */
+    font-weight: 700;
+    color: rgba(255, 255, 255, 0.90);
+    line-height: 1.15;
+    text-shadow: 0 2px 40px rgba(0, 0, 0, 0.6);
+    transition: font-size 1.3s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+/* Shrinks when migrated to corner */
+#corridor-label.is-corner .corridor-title {
+    font-size: clamp(0.82rem, 1.2vw, 1.0rem);
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.70);
+    text-shadow: none;
+}
+
+/* ── Scroll hint (bottom-center) ─────────────────────────── */
+#corridor-scroll-hint {
+    position: absolute;
+    bottom: 2.5rem;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 20;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    opacity: 1;
+    transition: opacity 0.5s ease;
+    pointer-events: none;
+}
+
+#corridor-scroll-hint.hidden {
+    opacity: 0;
+}
+
+.corridor-scroll-line {
+    width: 1px;
+    height: 40px;
+    background: linear-gradient(to bottom, rgba(212, 175, 55, 0.8), transparent);
+    animation: scroll-line-pulse 1.6s ease-in-out infinite;
+}
+
+@keyframes scroll-line-pulse {
+
+    0%,
+    100% {
+        transform: scaleY(1);
+        opacity: 0.8;
+    }
+
+    50% {
+        transform: scaleY(1.15);
+        opacity: 1;
+    }
+}
+
+.corridor-scroll-text {
+    font-family: var(--font-main);
+    font-size: 0.62rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: rgba(212, 175, 55, 0.6);
+}
+
+/* ── Text overlay panel (reveals as user walks) ───────────── */
+#corridor-text-overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 10;
+    pointer-events: none;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding: 0 6vw;
+    transition: opacity 0.6s ease;
+}
+
+.corridor-text-panel {
+    width: min(400px, 34vw);
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    opacity: 0;
+    transform: translateX(24px);
+
+    /* Frosted dark card backing */
+    background: rgba(8, 5, 2, 0.55);
+    backdrop-filter: blur(14px) saturate(1.2);
+    -webkit-backdrop-filter: blur(14px) saturate(1.2);
+    border: 1px solid rgba(212, 175, 55, 0.12);
+    border-left: 3px solid rgba(212, 175, 55, 0.65);
+    border-radius: 4px;
+    padding: 1.6rem 1.8rem;
+
+    transition: opacity 0.65s cubic-bezier(0.23, 1, 0.32, 1),
+        transform 0.65s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.corridor-text-panel.is-visible {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+.corridor-text-panel .panel-label {
+    font-family: var(--font-main);
+    font-size: 0.62rem;
+    font-weight: 600;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: rgba(212, 175, 55, 0.75);
+    margin-bottom: 0.2rem;
+}
+
+/* stagger container */
+.corridor-text-panel .panel-body {
+    display: flex;
+    flex-direction: column;
+    gap: 0.65rem;
+}
+
+.corridor-text-panel .panel-line {
+    display: block;
+    font-family: var(--font-heading);
+    font-size: clamp(0.94rem, 1.38vw, 1.14rem);
+    font-weight: 400;
+    color: rgba(255, 255, 255, 0.82);
+    line-height: 1.72;
+}
+
+.corridor-text-panel .panel-line strong {
+    color: #fff;
+    font-weight: 700;
+}
+
+/* ── The highlighted quote (mid-corridor) ─────────────────── */
+#corridor-quote {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0.92);
+    z-index: 15;
+    text-align: center;
+    max-width: 600px;
+    padding: 0 4vw;
+    opacity: 0;
+    transition: opacity 0.8s ease, transform 0.8s cubic-bezier(0.23, 1, 0.32, 1);
+    pointer-events: none;
+}
+
+#corridor-quote.is-visible {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+}
+
+.corridor-quote-mark {
+    font-family: var(--font-heading);
+    font-size: 6.5rem;
+    color: rgba(212, 175, 55, 0.20);
+    line-height: 0.45;
+    display: block;
+    margin-bottom: 0.6rem;
+}
+
+.corridor-quote-text {
+    font-family: var(--font-heading);
+    font-size: clamp(1.55rem, 2.8vw, 2.5rem);
+    font-style: italic;
+    font-weight: 700;
+    color: #fff;
+    line-height: 1.32;
+    text-shadow:
+        0 0 80px rgba(255, 215, 0, 0.35),
+        0 2px 40px rgba(0, 0, 0, 0.6);
+}
+
+.corridor-quote-sub {
+    display: block;
+    margin-top: 1.2rem;
+    font-family: var(--font-main);
+    font-size: 0.72rem;
+    letter-spacing: 0.20em;
+    text-transform: uppercase;
+    color: rgba(212, 175, 55, 0.75);
+}
+
+/* Extra glass backing for quote legibility */
+#corridor-quote::before {
+    content: '';
+    position: absolute;
+    inset: -3rem -3.5rem;
+    background: radial-gradient(ellipse at center,
+            rgba(0, 0, 0, 0.70) 0%,
+            rgba(0, 0, 0, 0.0) 72%);
+    border-radius: 50%;
+    z-index: -1;
+    pointer-events: none;
+}
+
+/* ── Zone indicator (which "room" you're in) ──────────────── */
+#corridor-zone {
+    position: absolute;
+    bottom: 2.5rem;
+    right: 4vw;
+    z-index: 20;
+    text-align: right;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+}
+
+#corridor-zone.is-visible {
+    opacity: 1;
+}
+
+.zone-label {
+    font-family: var(--font-main);
+    font-size: 0.60rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.30);
+    margin-bottom: 0.2rem;
+}
+
+.zone-name {
+    font-family: var(--font-heading);
+    font-size: 1.05rem;
+    font-style: italic;
+    color: rgba(255, 255, 255, 0.70);
+    transition: color 0.7s ease, text-shadow 0.7s ease,
+        opacity 0.4s ease, transform 0.4s ease;
+}
+
+.zone-name.is-bright {
+    color: rgba(26, 18, 5, 0.90);
+    text-shadow: none;
+}
+
+/* ── Dust particle canvas (layered over scene) ────────────── */
+#corridor-dust {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 8;
+    opacity: 0.55;
+}
+
+/* ── Arrival flash overlay (injected by JS) ──────────────── */
+#corridor-arrival {
+    transition: background 1.6s ease, box-shadow 1.2s ease;
+}
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+@media (max-width: 960px) {
+    .corridor-text-panel {
+        width: min(340px, 80vw);
+    }
+
+    #services-intro {
+        padding: 6rem 7vw;
+        min-height: unset;
+        padding-bottom: 5rem;
+    }
+
+    .services-deco-number {
+        display: none;
+    }
+}
+
+@media (max-width: 600px) {
+    #corridor {
+        height: 700vh;
+    }
+
+    .corridor-text-panel {
+        width: 88vw;
+        padding: 1.2rem;
+        background: rgba(0, 0, 0, 0.45);
+        border-radius: 8px;
+        backdrop-filter: blur(8px);
+    }
+
+    #corridor-text-overlay {
+        align-items: flex-end;
+        justify-content: center;
+        padding-bottom: 5rem;
+    }
+
+    .corridor-quote-text {
+        font-size: 1.4rem;
+    }
+}
