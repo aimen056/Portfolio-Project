@@ -10,9 +10,8 @@
 .video-container {
     position: relative;
     width: 100vw;
-    height: 56.25vw;
-    max-height: 100vh;
-    max-width: 177.78vh;
+    aspect-ratio: 16 / 9;
+    /* Removed max-height/max-width to ensure true 16:9 regardless of viewport height */
     background: var(--color-bg);
     overflow: hidden;
 }
@@ -251,34 +250,4 @@
 .quote-p2 {
     opacity: 0;
     display: inline-block;
-}
-
-.controls-overlay {
-    position: absolute;
-    bottom: 2vw;
-    right: 2vw;
-    z-index: 100;
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.5s;
-}
-
-.controls-overlay.show {
-    opacity: 1;
-    pointer-events: auto;
-}
-
-#replay-btn {
-    background: transparent;
-    border: 1px solid var(--color-gold);
-    color: var(--color-gold);
-    padding: 0.8vw 1.5vw;
-    cursor: pointer;
-    font-family: var(--font-sans);
-    text-transform: uppercase;
-}
-
-#replay-btn:hover {
-    background: var(--color-gold);
-    color: var(--color-bg);
 }

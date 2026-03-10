@@ -150,7 +150,7 @@ animate();
 // --- GSAP Timeline Orchestration ---
 const tl = gsap.timeline({
     paused: true,
-    onComplete: () => gsap.to('.controls-overlay', { autoAlpha: 1 })
+    repeat: -1 // Loop infinitely
 });
 
 // Resets
@@ -256,18 +256,4 @@ const observer = new IntersectionObserver((entries) => {
 
 observer.observe(document.getElementById('video-box'));
 
-const replayBtn = document.getElementById('replay-btn');
-if (replayBtn) {
-    replayBtn.addEventListener('click', () => {
-        gsap.to('.controls-overlay', { autoAlpha: 0, duration: 0.3 });
-        hookGroup.visible = false;
-        yearsGroup.visible = false;
-        projectsGroup.visible = false;
-        systemGroup.visible = false;
 
-        gsap.set([hookMat, nodesMat, cubeMat, chartMat, coreMat, orbitMat], { opacity: 0 });
-        chartBars.forEach(b => gsap.set(b.scale, { y: 0.01 }));
-
-        tl.restart();
-    });
-}

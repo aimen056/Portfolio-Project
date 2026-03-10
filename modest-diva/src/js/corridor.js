@@ -205,7 +205,7 @@
             new THREE.Vector3(0.0, 1.55, CL * 0.01), // quote zone centre
             new THREE.Vector3(-0.3, 1.65, -CL * 0.12),
             new THREE.Vector3(0.2, 1.55, -CL * 0.30),
-            new THREE.Vector3(0.0, 1.50, -CL * 0.5 + 0.3), // intimately close to the end wall
+            new THREE.Vector3(0.0, 1.55, -CL * 0.5 + 5.2), // intimately close to the end wall
         ]);
         // Force arc-length (equal distance per t unit)
         camCurve.arcLengthDivisions = 400;
@@ -218,7 +218,7 @@
             new THREE.Vector3(0.0, 1.60, -CL * 0.07),
             new THREE.Vector3(-0.2, 1.65, -CL * 0.22),
             new THREE.Vector3(0.2, 1.55, -CL * 0.38),
-            new THREE.Vector3(0.0, 1.50, -CL * 0.5 - 3.0), // look directly at mural, far ahead
+            new THREE.Vector3(0.0, 1.55, -CL * 0.5 - 2.0), // look directly at mural, far ahead
         ]);
         lookCurve.arcLengthDivisions = 400;
         lookCurve.updateArcLengths();
@@ -982,7 +982,8 @@
     function pauseEase(t) {
         if (t < 0.43) return t * 0.98;
         if (t < 0.57) return 0.4214 + (t - 0.43) * 0.12; // very slow here
-        return 0.4382 + (t - 0.57) * 1.0;
+        // We need to cover the remaining distance to 1.0 in the remaining 0.43 of t
+        return 0.4382 + (t - 0.57) * (0.5618 / 0.43);
     }
 
     /* ══════════════════════════════════════════════════════════════
@@ -996,10 +997,15 @@
         // ── Label: centered → corner transition driven by scroll ──
         const lbl = document.getElementById('corridor-label');
         if (lbl) {
-            if (t > 0.06) {
-                lbl.classList.add('is-corner');
+            if (t > 0.98) {
+                lbl.style.display = 'none';
             } else {
-                lbl.classList.remove('is-corner');
+                lbl.style.display = 'flex';
+                if (t > 0.06) {
+                    lbl.classList.add('is-corner');
+                } else {
+                    lbl.classList.remove('is-corner');
+                }
             }
         }
 
@@ -1040,9 +1046,17 @@
         const camZNorm = camera.position.z / (CL * 0.5); // +1 → -1 as we move forward
 
         // Delay text panel until heading has migrated to corner (t > 0.13)
+        // Also fade out text panel completely at the final stage (t > 0.98)
         const overlay = document.getElementById('corridor-text-overlay');
-        if (overlay) overlay.style.opacity = t > 0.13 ? '1' : '0';
-        if (t > 0.13) {
+        if (overlay) {
+            overlay.style.opacity = (t > 0.13 && t < 0.98) ? '1' : '0';
+        }
+        const zoneEl = document.getElementById('corridor-zone');
+        if (zoneEl) {
+            zoneEl.style.opacity = (t > 0.13 && t < 0.98) ? '1' : '0';
+        }
+
+        if (t > 0.13 && t < 0.98) {
             updateTextPanel(camZNorm);
             updateZoneLabel(camZNorm);
         }
